@@ -1,5 +1,3 @@
-<!--
-
 <div class="container">
   <div class="d-flex justify-content-center mt-4">
     <mat-card class="card col-lg-5" style="background-color: #ffffffa5;">
@@ -52,21 +50,25 @@
 
 
       <div *ngIf="certifiedYear">
+        <mat-spinner *ngIf="certifiedYearSpinner" ></mat-spinner>
         <div class="container mt-2">
           <mat-form-field class="w-100">
             <mat-label>Año</mat-label>
             <mat-select formControlName="servicio" [(value)]="certifiedYearValue" (selectionChange)="selectCertifiedYear(certifiedYearValue)">
-              <mat-option  *ngFor="let option of filteredServList | async" [value]="option" >
+              <mat-option  *ngFor="let option of servicios" [value]="option" >
                 {{option.year}}
               </mat-option>
             </mat-select>
             <mat-error *ngIf="resolvePassword.get('servicio').hasError('required') ">
               Este campo es obligatorio.
             </mat-error>
-
+            <!--
+            <mat-error *ngIf="cambioCitas.get('tipoCita').hasError('checkState')">
+              No se puede cambiar al mismo estado de la cita
+            </mat-error>   -->
           </mat-form-field>
         </div>
-      </div>  -->
+      </div>
 
       <!--
       <div class="container" *ngIf="certifiedPeriodicity">
@@ -95,7 +97,6 @@
         </div>
       </div>   -->
 
-      <!--
       <div *ngIf="certifiedPeriod">
         <div class="container mt-2">
           <mat-form-field class="w-100">
@@ -108,7 +109,10 @@
             <mat-error *ngIf="resolvePassword.get('period').hasError('required') ">
               Este campo es obligatorio.
             </mat-error>
-
+            <!--
+            <mat-error *ngIf="cambioCitas.get('tipoCita').hasError('checkState')">
+              No se puede cambiar al mismo estado de la cita
+            </mat-error>   -->
           </mat-form-field>
         </div>
       </div>
@@ -135,7 +139,10 @@
             <mat-error *ngIf="resolvePassword.get('municipio').hasError('required') ">
               Este campo es obligatorio.
             </mat-error>
-
+            <!--
+            <mat-error *ngIf="cambioCitas.get('tipoCita').hasError('checkState')">
+              No se puede cambiar al mismo estado de la cita
+            </mat-error>   -->
           </mat-form-field>
         </div>
       </div>
@@ -146,7 +153,7 @@
       <br>
       <div class="container text-right mt-5">
        <button mat-raised-button class="buttonCA-second mat-raised-button" type="button" style="font-size: 12px;" (click)="close()">CANCELAR</button>
-       <button mat-raised-button class="buttonCA primary" type="submit" style="font-size: 12px;" [disabled]="resolvePassword.invalid">DESCARGAR</button>
+       <button mat-raised-button class="buttonCA primary" type="submit" style="font-size: 12px;" >DESCARGAR</button>
       </div>
       <br> <br> <br>
      </form>
@@ -157,14 +164,8 @@
 
 
 <div>
-  <button class="btn col col-lg-4 btn-danger btn-block ml-4" (click)="downloadPDF()">Download PDF</button>
-</div>  -->
+  <button class="btn col col-lg-4 btn-danger btn-block ml-4" (click)="onSubmit()">Download PDF</button>
+</div>
 
-<ngx-spinner bdOpacity = 0.6
-  bdColor = "#1F387EE6"
-  size = "medium"
-  [fullScreen] = "true">
-  <p class="type_18 text-white">Estamos procesando su solicitud, por favor espere...</p>
-</ngx-spinner>
 
-<app-generar-certificado></app-generar-certificado>
+<!-- [disabled]="resolvePassword.invalid"  -->

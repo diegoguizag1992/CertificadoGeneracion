@@ -1,21 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import jsPDF from 'jspdf';
-// import html2canvas from 'html2canvas';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { GenerateCertificateService } from './services/generateCertificate/generate-certificate.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import jsPDF from 'jspdf';
 import { NgxSpinnerService } from 'ngx-spinner';
-
-
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { GenerateCertificateService } from 'src/app/services/generateCertificate/generate-certificate.service';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  selector: 'app-generar-certificado',
+  templateUrl: './generar-certificado.component.html',
+  styleUrls: ['./generar-certificado.component.css']
 })
-export class AppComponent implements OnInit {
+export class GenerarCertificadoComponent implements OnInit {
   VIDEOGAMES = [
     {
       id: 1,
@@ -80,6 +78,7 @@ export class AppComponent implements OnInit {
   certifiedPeriodicity = false;
   certifiedPeriod = false;
   certifiedMunicipality = false;
+  certifiedYearSpinner = false;
 
   constructor(private fb: FormBuilder,
               private generateCertificate: GenerateCertificateService,
@@ -115,11 +114,11 @@ export class AppComponent implements OnInit {
 
   onSubmit(): void {
 
-    if (this.resolvePassword.valid) {
+   // if (this.resolvePassword.valid) {
 
       this.downloadPDF();
 
-    }
+   //  }
 
   }
 
@@ -150,6 +149,8 @@ export class AppComponent implements OnInit {
     }).then((docResult) => {
       docResult.save(`${new Date().toISOString()}_tutorial.pdf`);
     });  */
+    this.spinnerService.show();
+
     var logo = new Image();
     logo.src = './assets/images/fsfb.png';
 
@@ -157,14 +158,106 @@ export class AppComponent implements OnInit {
     doc.addImage(logo, 'JPEG', 10, 5, 50, 20);
     doc.setFont('helvetica');
     doc.setFontType('bold');
-    doc.setFontSize(12);
-    doc.text(60, 30, 'Certificado de Retención en la fuente por IVA');
-    doc.text(92, 35, 'Año garvable');
-    doc.text(68, 40, 'FUNDACIÓN SANTA FE DE BOGOTÁ');
-    doc.text(87, 45, 'NIT: 860037950 - 2');
-    doc.text(63, 50, 'CALLE 119 No. 7 - 75 TELEFONO 6030303');
-    doc.text(78, 55, 'BOGOTÁ D.C - COLOMBIA');
+    doc.setFontSize(10);
+    doc.text(68, 30, 'Certificado de Retención en la fuente por IVA');
+    doc.text(95, 35, 'Año garvable');
+    doc.text(75, 40, 'FUNDACIÓN SANTA FE DE BOGOTÁ');
+    doc.text(92, 45, 'NIT: 860037950 - 2');
+    doc.text(72, 50, 'CALLE 119 No. 7 - 75 TELEFONO 6030303');
+    doc.text(85, 55, 'BOGOTÁ D.C - COLOMBIA');
+
+    doc.text(96, 70, 'CERTIFICA');
+    doc.setFont('helvetica');
+    doc.setFontType('normal');
+    doc.setFontSize(10);
+    doc.text(20, 75, `Que durante el periodo comprendido entre 01/01/2019 y 31/12/2019 en la ciudad de BOGOTA D.C se práctico`);
+    doc.text(20, 80, `y consignó retención en la fuente Título de Renta a:`);
+
+    doc.setFont('helvetica');
+    doc.setFontType('bold');
+    doc.setFontSize(10);
+    doc.text(62, 95, 'INGENIERIA CLINICA A SU SERVICIO INCLISER LTDA');
+    doc.text(97, 100, '9001800693');
+
+    doc.text(30, 115, 'PERIODO');
+    doc.text(60, 115, 'CONCEPTO');
+    doc.text(110, 115, 'BASE');
+    doc.text(130, 115, 'PORCENTAJE');
+    doc.text(170, 115, 'RETENCIÓN');
+
+    //  Porcentajes PDF
+    doc.setFont('helvetica');
+    doc.setFontType('normal');
+    doc.setFontSize(10);
+
+
+
+
+
+
+    doc.setFont('helvetica');
+    doc.setFontType('bold');
+    doc.setFontSize(10);
+    doc.text(20, 160, 'VALOR RETENIDO:');
+    doc.text(20, 165, 'SEISCIENTOS CINCUENTA Y TRES MIL TRESCIENTOS SETENTA Y CINCO');
+    doc.setFont('helvetica');
+    doc.setFontType('normal');
+    doc.setFontSize(7);
+    doc.text(20, 175, 'LA BASE DE RETENCIÓN EN LA FUENTE, CORRESPONDE AL 100% DE SUS INGRESOS MENOS LAS DEDUCCIONES DE LEY SEGÚN EL ARTÍCULO');
+    doc.text(20, 180, '126 DEL ESTATUTO TRIBUTARIO (AFC, APORTES OBLIGATORIOS Y/O VOLUNTARIOS DE PENSIÓN), EN CASO DE TENERLOS.');
+
+    doc.setFont('helvetica');
+    doc.setFontType('bold');
+    doc.setFontSize(10);
+    doc.text(20, 200, 'FUNDACION SANTA FE DE BOGOTA');
+    doc.text(20, 205, 'NIT: 860037950-2');
+    doc.text(20, 210, 'FECHA DE EXPEDICION 05/03/2020');
+
+    doc.setFont('helvetica');
+    doc.setFontType('normal');
+    doc.setFontSize(7);
+    doc.text(20, 220, 'NOTA: LAS PERSONAS JURIDICAS PODRAN ENTREGAR LOS CERTIFICADOS DE RETENCION EN LA FUENTE, EN FORMA CONTINUA IMPRESA');
+    doc.text(20, 225, 'POR COMPUTADOR, SIN NECESIDAD DE FIRMA AUTOGRAFA (D.R. 836/91)LOS DOCUMENTOS QUE SE ENCUENTRAN ALMACENADOS EN');
+    doc.text(20, 230, 'MEDIOS MAGNÉTICOS O ELECTRÓNICOS PUEDAN SER IMPRESOS EN CUALQUIER PARTE UTILIZANDO EL COMPUTADOR, YA SEA EN LA SEDE');
+    doc.text(20, 235, 'DEL AGENTE DE RETENCIÓN O EN LA SEDE DEL RETENIDO (CONCEPTO DIAN 105489 DE 24-12-2007).LA UTILIZACION DE ESTE CERTIFICADO');
+    doc.text(20, 240, 'EN LAS DECLARACIONES TRIBUTARIAS QUE SE SURTAN ANTE LAS AUTORIDADES COMPETENTES ES RESPONSABILIDAD EXCLUSIVA DE LA(S)');
+    doc.text(20, 245, 'PERSONA(S) EN CUYO FAVOR SE EXPIDE.');
+
+
+    doc.setFont('helvetica');
+    doc.setFontType('bold');
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 255);
+    doc.text(50, 260, 'Calle 119 No. 7–75 Teléfono: 6030303 Fax: 6575714 Bogotá, D.C');
+    doc.text(90, 265, 'www.fsfb.org.co');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     doc.save('hello-world.pdf');
+
+    setTimeout(() => {
+      /** spinner ends after 5 seconds */
+      this.spinnerService.hide();
+    }, 8000);
+
   }
 
   close(): void {
@@ -174,7 +267,10 @@ export class AppComponent implements OnInit {
 
   selectDocumentType(document: string) {
 
+    console.log("entro");
     this.spinnerService.show();
+    this.certifiedYearSpinner = true;
+
 
     this.datos.nitTercero = '167307276';
     this.datos.typeCertificate = document;
@@ -185,12 +281,14 @@ export class AppComponent implements OnInit {
         this.certifiedYear = true;
         console.log(data);
         this.servicios = data;
+
+        /*
         this.filteredServList = this.myControl.valueChanges
             .pipe(
               startWith(''),
               map(value => typeof value === 'string' ? value : value.name),
               map(name => name ? this.__filter(name) : this.servicios.slice())
-            );
+            );  */
 
 
       }, (error: HttpErrorResponse) => {
@@ -231,15 +329,16 @@ export class AppComponent implements OnInit {
 
   selectCertifiedYear(document): any {
 
-    console.log("Test ", document );
+    console.log("entro 2");
 
+    this.spinnerService.show();
     this.datos.year = document.year;
-    this.certifiedPeriod = true;
 
     this.generateCertificate.listMonths(this.datos).subscribe(
       (data) => {
-
-        this.certifiedYear = true;
+        this.spinnerService.hide();
+        //this.certifiedYear = true;
+        this.certifiedPeriod = true;
         console.log(data);
         this.period = data;
         this.filteredPeriod = this.myControl.valueChanges
@@ -264,6 +363,8 @@ export class AppComponent implements OnInit {
   }
 
   selectCertifiedPeriod(document): any {
+
+    // this.spinnerService.show();
 
     this.certifiedMunicipality = true;
     this.datos.monthOne = document.periodo;
@@ -305,10 +406,11 @@ export class AppComponent implements OnInit {
 
     this.datos.crMunicipio = document;
     console.log(this.datos);
+    // this.spinnerService.show();
 
     this.generateCertificate.generateCertificate(this.datos).subscribe(
       (data) => {
-
+       // this.spinnerService.hide();
         console.log(data);
         this.dataListCertificate = data;
         console.log(this.dataListCertificate);
