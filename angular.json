@@ -126,5 +126,8 @@
       }
     }
   },
-  "defaultProject": "angular-pdf"
+  "defaultProject": "angular-pdf",
+  "cli": {
+    "analytics": false
+  }
 }

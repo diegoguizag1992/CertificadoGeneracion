@@ -25,20 +25,20 @@
               <mat-option disabled value="Seleccione">
                 Seleccione el tipo de certificado
               </mat-option>
-              <mat-option value=1>
-                Ica.
+              <mat-option [value]=1>
+                ICA
               </mat-option>
-              <mat-option value=2>
-                Iva.
+              <mat-option [value]=2>
+                IVA
               </mat-option>
-               <mat-option value=3>
-                Retefuente.
+               <mat-option [value]=3>
+                TIMBRE
               </mat-option>
-              <mat-option value=4>
-                Timbre.
+              <mat-option [value]=4>
+                RETEFUENTE
               </mat-option>
-              <mat-option value=5>
-                Cuentas en participación.
+              <mat-option [value]=5>
+                CUENTAS EN PARTICIPACIÓN
               </mat-option>
             </mat-select>
             <mat-error *ngIf="resolvePassword.get('documentType').hasError('required') ">
@@ -47,7 +47,6 @@
           </mat-form-field>
           </div>
       </div>
-
 
       <div *ngIf="certifiedYear">
         <mat-spinner *ngIf="certifiedYearSpinner" ></mat-spinner>
@@ -70,40 +69,75 @@
         </div>
       </div>
 
-      <!--
-      <div class="container" *ngIf="certifiedPeriodicity">
+      <div class="" *ngIf="certifiedPeriodicity">
         <div class="container mt-2">
           <mat-form-field class="w-100">
             <mat-label>Periocidad</mat-label>
-            <mat-select formControlName="periocidad">
+            <mat-select formControlName="periocidad" [(value)]="selectPeriodicidad" (selectionChange)="selectPeriodicy(selectPeriodicidad)">
               <mat-option disabled value="Seleccione">
                 Seleccione la periocidad
               </mat-option>
-              <mat-option value="1">
-                Bimestral.
+              <mat-option [value]=1>
+                ANUAL
               </mat-option>
-              <mat-option value="2">
-                Anual.
+              <mat-option [value]=2>
+                BIMESTRAL
               </mat-option>
             </mat-select>
             <mat-error *ngIf="resolvePassword.get('periocidad').hasError('required') ">
               Este campo es obligatorio.
             </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
 
-            <mat-error *ngIf="cambioCitas.get('tipoCita').hasError('checkState')">
-              No se puede cambiar al mismo estado de la cita
+      <div class="" *ngIf="certifiedPeriodicityDos">
+        <div class="container mt-2">
+          <mat-form-field class="w-100">
+            <mat-label>Periocidad</mat-label>
+            <mat-select formControlName="periocidad"  [(value)]="PeriodicityDos" (selectionChange)="selectPeriodicyDos(PeriodicityDos)">
+              <mat-option disabled value="Seleccione">
+                Seleccione la periocidad
+              </mat-option>
+              <mat-option [value]=1>
+                ANUAL
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="resolvePassword.get('periocidad').hasError('required') ">
+              Este campo es obligatorio.
             </mat-error>
           </mat-form-field>
         </div>
-      </div>   -->
+      </div>
+
 
       <div *ngIf="certifiedPeriod">
         <div class="container mt-2">
           <mat-form-field class="w-100">
             <mat-label>Periodo</mat-label>
             <mat-select formControlName="period" [(value)]="certifiedPeriodValue" (selectionChange)="selectCertifiedPeriod(certifiedPeriodValue)">
-              <mat-option  *ngFor="let option of filteredPeriod | async" [value]="option" >
+              <mat-option  *ngFor="let option of filteredPeriod" [value]="option" >
                 {{option.periodo}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="resolvePassword.get('period').hasError('required') ">
+              Este campo es obligatorio.
+            </mat-error>
+            <!--
+            <mat-error *ngIf="cambioCitas.get('tipoCita').hasError('checkState')">
+              No se puede cambiar al mismo estado de la cita
+            </mat-error>   -->
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div *ngIf="certifiedMunicipalityDos">
+        <div class="container mt-2">
+          <mat-form-field class="w-100">
+            <mat-label>Municipio</mat-label>
+            <mat-select formControlName="municipio" [(value)]="certifiedMunicipalityValue" (selectionChange)="selectCertifiedMunicipality(certifiedMunicipalityValue)">
+              <mat-option  *ngFor="let option of filteredMunicipal" [value]="option" >
+                {{option.municipio}}
               </mat-option>
             </mat-select>
             <mat-error *ngIf="resolvePassword.get('period').hasError('required') ">
@@ -126,14 +160,14 @@
               <mat-option disabled value="Seleccione">
                 Seleccione el municipio
               </mat-option>
-              <mat-option value="1">
-                Bogotá.
+              <mat-option *ngIf="validacionMunicipioUno" [value]=1>
+                BOGOTÁ
               </mat-option>
-              <mat-option value="2">
-                Chia.
+              <mat-option *ngIf="validacionMunicipioTres" [value]=3>
+                CHIA
               </mat-option>
-              <mat-option value="3">
-                Madrid.
+              <mat-option *ngIf="validacionMunicipioDos" [value]=2>
+                MADRID
               </mat-option>
             </mat-select>
             <mat-error *ngIf="resolvePassword.get('municipio').hasError('required') ">
@@ -153,7 +187,7 @@
       <br>
       <div class="container text-right mt-5">
        <button mat-raised-button class="buttonCA-second mat-raised-button" type="button" style="font-size: 12px;" (click)="close()">CANCELAR</button>
-       <button mat-raised-button class="buttonCA primary" type="submit" style="font-size: 12px;" >DESCARGAR</button>
+       <button mat-raised-button class="buttonCA primary" type="submit" style="font-size: 12px;" [disabled]="!descarga" >DESCARGAR</button>
       </div>
       <br> <br> <br>
      </form>
@@ -163,9 +197,10 @@
 <br> <br> <br>
 
 
+<!--
 <div>
   <button class="btn col col-lg-4 btn-danger btn-block ml-4" (click)="onSubmit()">Download PDF</button>
 </div>
-
+-->
 
 <!-- [disabled]="resolvePassword.invalid"  -->

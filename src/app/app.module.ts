@@ -11,13 +11,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { GenerarCertificadoComponent } from './component/logeado/generar-certificado/generar-certificado.component';
 import { AppRoutingModule } from './app-routing.module';
+import { PruebaComponent } from './component/prueba/prueba.component';
+import { NgxSpinnerModule } from "ngx-spinner";
+
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    GenerarCertificadoComponent
+    GenerarCertificadoComponent,
+    PruebaComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +34,7 @@ import { AppRoutingModule } from './app-routing.module';
     MatButtonModule,
     HttpClientModule,
     MatAutocompleteModule,
-    NgxSpinnerModule,
+    NgxSpinnerModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

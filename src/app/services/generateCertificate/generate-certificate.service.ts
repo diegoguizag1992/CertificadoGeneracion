@@ -26,8 +26,6 @@ export class GenerateCertificateService {
 
   listMonths(listYears): any {
 
-    console.log(listYears);
-
 
     return this.http.post(`http://52.247.56.140:8080/listMonths`, listYears);
 
@@ -35,15 +33,37 @@ export class GenerateCertificateService {
 
   generateCertificate(dataList): any {
 
+    console.log("eN EL SERVICIO", dataList );
+
+
     return this.http.post(`http://52.247.56.140:8080/generateCertificate`, dataList);
 
   }
 
+  CertificateByYear(data){
 
-
-
-
+    return this.http.post(`http://52.247.56.140:8080/generateCertificateByYear`, data);
 
   }
+
+  listMunicipalities(data){
+
+    return this.http.post(`http://52.247.56.140:8080/listMunicipalities`, data);
+
+  }
+
+
+  datosDataPJ(data){
+
+    return this.http.post(`http://52.247.56.140:8080/getDataPJ`, data);
+  }
+
+  datosDataPN(data){
+
+    return this.http.post(`http://52.247.56.140:8080/getDataPN`, data);
+  }
+
+
+}
 
 

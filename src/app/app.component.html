@@ -160,11 +160,11 @@
   <button class="btn col col-lg-4 btn-danger btn-block ml-4" (click)="downloadPDF()">Download PDF</button>
 </div>  -->
 
-<ngx-spinner bdOpacity = 0.6
+<ngx-spinner bdOpacity = 0.6 style="width: 300px;"
   bdColor = "#1F387EE6"
   size = "medium"
   [fullScreen] = "true">
   <p class="type_18 text-white">Estamos procesando su solicitud, por favor espere...</p>
 </ngx-spinner>
 
-<app-generar-certificado></app-generar-certificado>
+<router-outlet></router-outlet>
